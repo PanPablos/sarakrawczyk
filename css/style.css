@@ -1,0 +1,401 @@
+﻿/* Wizytówka – Sara Krawczyk. Lekki CSS, bez zależności. */
+
+:root {
+  --tlo: #faf8f4;
+  --karta: #ffffff;
+  --tekst: #23233a;
+  --tekst-2: #5c5c72;
+  --fiolet: #47478f;
+  --zielen: #0d7a4f;
+  --linia: #e7e3da;
+  --cien: 0 1px 2px rgb(35 35 58 / .06), 0 8px 24px rgb(35 35 58 / .08);
+  --radius: 20px;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-naglowek: "Segoe UI Black", "Arial Black", system-ui, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--tekst);
+  background: var(--tlo);
+}
+
+img { max-width: 100%; display: block; }
+
+a { color: var(--fiolet); text-underline-offset: .2em; }
+a:hover { color: var(--zielen); }
+
+:focus-visible {
+  outline: 3px solid var(--zielen);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.kontener {
+  width: min(100% - 2.5rem, 1040px);
+  margin-inline: auto;
+}
+
+/* ---------- Nagłówek ---------- */
+
+.naglowek {
+  padding-block: clamp(2.5rem, 8vw, 5rem) 2rem;
+}
+
+.imie {
+  margin: 0;
+  font-family: var(--font-naglowek);
+  font-weight: 900;
+  font-size: clamp(2.6rem, 9vw, 5rem);
+  line-height: .95;
+  letter-spacing: -.01em;
+  text-transform: uppercase;
+  color: var(--fiolet);
+}
+
+.imie a { color: inherit; text-decoration: none; }
+
+.podtytul {
+  margin: 1rem 0 0;
+  font-weight: 600;
+  font-size: .95rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--zielen);
+}
+
+.linki {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .6rem;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.linki a {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .55rem 1rem;
+  border: 1px solid var(--linia);
+  border-radius: 999px;
+  background: var(--karta);
+  color: var(--tekst);
+  text-decoration: none;
+  font-size: .95rem;
+  transition: border-color .2s, color .2s;
+}
+
+.linki a:hover { border-color: var(--fiolet); color: var(--fiolet); }
+
+.ikona { width: 1.15em; height: 1.15em; flex: none; }
+
+/* ---------- Kafelki (strona główna) ---------- */
+
+.kafelki {
+  display: grid;
+  gap: 1.25rem;
+  padding-bottom: 4rem;
+}
+
+@media (min-width: 640px) {
+  .kafelki { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 1000px) {
+  .kafelki { grid-template-columns: repeat(4, 1fr); }
+}
+
+.kafel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 1.5rem;
+  border-radius: var(--radius);
+  background: var(--karta);
+  box-shadow: var(--cien);
+  color: var(--tekst);
+  text-decoration: none;
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.kafel:hover { transform: translateY(-4px); color: var(--tekst); }
+
+.kafel-wizual {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  border-radius: calc(var(--radius) - 6px);
+  background: var(--tlo);
+  overflow: hidden;
+}
+
+.kafel-wizual .kwiat { width: 78%; }
+.kafel-wizual .stos { width: 52%; pointer-events: none; }
+
+.kafel h2 {
+  margin: 0;
+  font-family: var(--font-naglowek);
+  font-size: 1.4rem;
+  color: var(--fiolet);
+}
+
+.kafel p { margin: .25rem 0 0; color: var(--tekst-2); font-size: .95rem; }
+
+.kafel .strzalka { margin-left: auto; transition: transform .2s; }
+.kafel:hover .strzalka { transform: translateX(4px); }
+
+.kafel-podpis { display: flex; align-items: end; gap: 1rem; }
+
+/* Kartka z wersami (kafelek „Wiersze”) */
+.kartka {
+  display: flex;
+  flex-direction: column;
+  gap: 9%;
+  width: 52%;
+  aspect-ratio: 4 / 5;
+  padding: 14% 12%;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: var(--cien);
+  transform: rotate(-3deg);
+  transition: transform .35s ease;
+}
+
+.kartka span { height: 3px; border-radius: 2px; background: var(--linia); }
+.kartka span:first-child { width: 60%; background: var(--fiolet); opacity: .6; }
+.kartka .krotka { width: 55%; }
+.kartka .krotka + span { margin-top: 8%; }
+.kafel:hover .kartka { transform: rotate(0); }
+
+/* ---------- Zdjęcie w kształcie kwiatka ---------- */
+
+.kwiat {
+  height: auto;
+  aspect-ratio: 1;
+  object-position: 50% 35%;
+  clip-path: url(#ksztalt-kwiat);
+  object-fit: cover;
+}
+
+/* ---------- Stosy ---------- */
+
+.stos {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.stos img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 6px solid #fff;
+  border-radius: 6px;
+  box-shadow: var(--cien);
+  transition: transform .35s ease;
+}
+
+.stos img:nth-child(1) { z-index: 3; transform: rotate(-1.5deg); }
+.stos img:nth-child(2) { z-index: 2; transform: rotate(5deg); }
+.stos img:nth-child(3) { z-index: 1; transform: rotate(-7deg); }
+.stos img:nth-child(n + 4) { display: none; }
+
+.stos:hover img:nth-child(1),
+.stos:focus-visible img:nth-child(1) { transform: rotate(0) translateY(-4%); }
+.stos:hover img:nth-child(2),
+.stos:focus-visible img:nth-child(2) { transform: rotate(10deg) translateX(16%); }
+.stos:hover img:nth-child(3),
+.stos:focus-visible img:nth-child(3) { transform: rotate(-12deg) translateX(-16%); }
+
+/* ---------- Podstrony ---------- */
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .5rem 1.5rem;
+  padding-block: 1.5rem;
+  border-bottom: 1px solid var(--linia);
+}
+
+.nav-marka {
+  margin-right: auto;
+  font-family: var(--font-naglowek);
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--fiolet);
+  text-decoration: none;
+}
+
+.nav ul { display: flex; gap: 1.25rem; margin: 0; padding: 0; list-style: none; }
+.nav ul a { color: var(--tekst-2); text-decoration: none; }
+.nav ul a:hover, .nav ul a[aria-current="page"] { color: var(--fiolet); }
+.nav ul a[aria-current="page"] { font-weight: 600; }
+
+.tytul-strony {
+  margin: clamp(2rem, 6vw, 3.5rem) 0 .5rem;
+  font-family: var(--font-naglowek);
+  font-size: clamp(2rem, 6vw, 3rem);
+  line-height: 1.05;
+  color: var(--fiolet);
+}
+
+.wstep { max-width: 60ch; margin: 0 0 2.5rem; color: var(--tekst-2); }
+
+.stosy {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 3rem 2.5rem;
+  padding: 1rem .5rem 5rem;
+}
+
+.stos-wrap { margin: 0; }
+
+.stos-wrap figcaption { margin-top: 1.25rem; }
+
+.stos-wrap figcaption strong { display: block; font-weight: 600; }
+.stos-wrap figcaption span { color: var(--tekst-2); font-size: .9rem; }
+
+/* O mnie */
+
+.o-mnie {
+  display: grid;
+  gap: 2.5rem;
+  align-items: start;
+  padding-block: 1rem 5rem;
+}
+
+@media (min-width: 760px) {
+  .o-mnie { grid-template-columns: 5fr 6fr; gap: 4rem; }
+}
+
+.o-mnie .kwiat { width: 100%; max-width: 420px; }
+
+.o-mnie h2 {
+  margin: 2rem 0 .75rem;
+  font-family: var(--font-naglowek);
+  font-size: 1.25rem;
+  color: var(--fiolet);
+}
+
+.o-mnie h2:first-child { margin-top: 0; }
+
+.kontakt { margin: 0; padding: 0; list-style: none; }
+.kontakt li + li { margin-top: .5rem; }
+.kontakt a { display: inline-flex; align-items: center; gap: .6rem; }
+
+/* Wiersze */
+
+.wiersze {
+  display: grid;
+  gap: 4rem;
+  max-width: 38rem;
+  padding-bottom: 5rem;
+}
+
+.wiersz h2 {
+  margin: 0 0 1.25rem;
+  font-family: var(--font-naglowek);
+  font-size: 1.35rem;
+  color: var(--fiolet);
+}
+
+.wiersz-tekst {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.15rem;
+  line-height: 1.8;
+  white-space: pre-line;
+}
+
+.wiersz + .wiersz { padding-top: 4rem; border-top: 1px solid var(--linia); }
+
+/* ---------- Podgląd (lightbox) ---------- */
+
+.podglad {
+  width: min(100vw - 1rem, 960px);
+  height: min(100vh - 1rem, 900px);
+  max-height: none;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius);
+  background: var(--tlo);
+  color: var(--tekst);
+}
+
+.podglad::backdrop { background: rgb(35 35 58 / .7); }
+
+/* Stały układ: zdjęcie wypełnia środek, przyciski nie zmieniają położenia */
+.podglad-tresc {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: .75rem;
+  height: 100%;
+  padding: 1rem;
+}
+
+.podglad-gora { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+.podglad-gora p { margin: 0; font-weight: 600; }
+
+.podglad img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.podglad-dol { display: flex; justify-content: space-between; align-items: center; }
+.podglad-dol span { color: var(--tekst-2); font-size: .9rem; }
+
+.przycisk {
+  min-width: 44px;
+  min-height: 44px;
+  padding: .4rem .9rem;
+  border: 1px solid var(--linia);
+  border-radius: 999px;
+  background: var(--karta);
+  color: var(--tekst);
+  font: inherit;
+  cursor: pointer;
+}
+
+.przycisk:hover { border-color: var(--fiolet); color: var(--fiolet); }
+
+/* ---------- Stopka ---------- */
+
+.stopka {
+  padding-block: 2rem;
+  border-top: 1px solid var(--linia);
+  color: var(--tekst-2);
+  font-size: .9rem;
+}
+
+.stopka .kontener { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; }
+.stopka a { color: inherit; }
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; }
+}
